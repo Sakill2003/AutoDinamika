@@ -1,2 +1,4 @@
 # AutoDinamika
-Auto Dinamika is a webpage where we can sell cars, consult inventories and schedule deliveries.
+This repository contents the project of the Software Engineering Seminar course. 
+Frontend developed with HTML, CSS and JavaScript vanilla.
+Backend developed in Springboot (Java).
