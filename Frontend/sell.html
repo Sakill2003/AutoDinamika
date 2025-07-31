@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Auto Dinamika - Car Sales</title>
+    <link rel="stylesheet" href="styles/global.css" />
+    <link rel="stylesheet" href="styles/sell.css" />
+</head>
+
+<body>
+    <div class="container">
+        <div class="logo">
+            <img src="/Frontend/assets/logo.png">
+        </div>
+
+        <h2 class="form-title">Car Sales</h2>
+
+        <form id="carSellingForm">
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="firstName">Customer Name</label>
+                    <input type="text" id="firstName" name="firstName" placeholder="Enter first name" required>
+                </div>
+                <div class="form-group">
+                    <label for="lastName">Customer Last Name</label>
+                    <input type="text" id="lastName" name="lastName" placeholder="Enter last name" required>
+                </div>
+            </div>
+
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="idType">ID Type</label>
+                    <select id="idType" name="idType" required>
+                        <option value="">Select ID Type</option>
+                        <option value="national">National ID</option>
+                        <option value="passport">Passport</option>
+                        <option value="drivers">Driver's License</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="idNumber">ID Number</label>
+                    <input type="text" id="idNumber" name="idNumber" placeholder="Enter ID number" required>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="paymentMethod">Payment Method</label>
+                <select id="paymentMethod" name="paymentMethod" required>
+                    <option value="">Select Payment Method</option>
+                    <option value="pse">PSE</option>
+                    <option value="amex">American Express</option>
+                    <option value="mastercard">MasterCard</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label for="carSelect">Select a Car</label>
+                <div class="car-dropdown">
+                    <div class="custom-car-select">
+                        <div class="select-button" id="carSelectButton">
+                            <span id="selectedCarText">Choose your car</span>
+                            <div class="select-arrow"></div>
+                        </div>
+                        <div class="select-options" id="carSelectOptions">
+                            <div class="select-option" data-value="honda-civic">
+                                <div class="car-image">🚗</div>
+                                <div class="car-name">Honda Civic 2022</div>
+                            </div>
+                            <div class="select-option" data-value="toyota-camry">
+                                <div class="car-image">🚙</div>
+                                <div class="car-name">Toyota Camry 2023</div>
+                            </div>
+                            <div class="select-option" data-value="bmw-x5">
+                                <div class="car-image">🚐</div>
+                                <div class="car-name">BMW X5 2021</div>
+                            </div>
+                            <div class="select-option" data-value="mercedes-c-class">
+                                <div class="car-image">🏎️</div>
+                                <div class="car-name">Mercedes C-Class 2022</div>
+                            </div>
+                            <div class="select-option" data-value="audi-a4">
+                                <div class="car-image">🚗</div>
+                                <div class="car-name">Audi A4 2023</div>
+                            </div>
+                            <div class="select-option" data-value="ford-mustang">
+                                <div class="car-image">🏁</div>
+                                <div class="car-name">Ford Mustang 2022</div>
+                            </div>
+                            <div class="select-option" data-value="chevrolet-camaro">
+                                <div class="car-image">🏎️</div>
+                                <div class="car-name">Chevrolet Camaro 2021</div>
+                            </div>
+                        </div>
+                    </div>
+                    <select id="carSelect" name="carSelect" class="car-select" required>
+                        <option value="">Choose your car</option>
+                        <option value="honda-civic">Honda Civic 2022</option>
+                        <option value="toyota-camry">Toyota Camry 2023</option>
+                        <option value="bmw-x5">BMW X5 2021</option>
+                        <option value="mercedes-c-class">Mercedes C-Class 2022</option>
+                        <option value="audi-a4">Audi A4 2023</option>
+                        <option value="ford-mustang">Ford Mustang 2022</option>
+                        <option value="chevrolet-camaro">Chevrolet Camaro 2021</option>
+                    </select>
+                </div>
+            </div>
+
+            <button type="submit" class="confirm-btn">Confirm Sale</button>
+        </form>
+    </div>
+    <script src="scripts/sell.js"></script>
+</body>
+
+</html>

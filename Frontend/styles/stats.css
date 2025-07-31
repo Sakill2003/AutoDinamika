@@ -1,0 +1,265 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background: linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 100%);
+    color: white;
+    min-height: 100vh;
+    padding: 20px;
+}
+
+.stats-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    background: #2a2a2a;
+    border-radius: 16px;
+    padding: 40px;
+    padding-top: 5%;
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+    border: 1px solid #404040;
+}
+
+.stats-header {
+    text-align: center;
+    margin-bottom: 40px;
+}
+
+.stats-header h1 {
+    font-size: 2.5rem;
+    font-weight: 700;
+    color: #ff6b35;
+    margin-bottom: 10px;
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+}
+
+.stats-header p {
+    color: #cccccc;
+    font-size: 1.1rem;
+}
+
+.stats-content {
+    display: grid;
+    grid-template-columns: 1fr 2fr;
+    gap: 40px;
+    align-items: start;
+}
+
+.user-profile {
+    background: #333333;
+    border-radius: 12px;
+    padding: 30px;
+    border: 1px solid #454545;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.user-profile:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 15px 30px rgba(255, 107, 53, 0.1);
+}
+
+.profile-image {
+    width: 120px;
+    height: 120px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, #ff6b35, #ff8f66);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 25px;
+    border: 4px solid #404040;
+    transition: border-color 0.3s ease;
+}
+
+.profile-image:hover {
+    border-color: #ff6b35;
+}
+
+.profile-image svg {
+    width: 60px;
+    height: 60px;
+    fill: white;
+}
+
+.user-title {
+    text-align: center;
+    font-size: 1.5rem;
+    font-weight: 600;
+    margin-bottom: 30px;
+    color: #ff6b35;
+}
+
+.user-info {
+    space-y: 15px;
+}
+
+.info-item {
+    display: flex;
+    align-items: center;
+    margin-bottom: 15px;
+    padding: 12px;
+    background: #404040;
+    border-radius: 8px;
+    transition: background-color 0.3s ease;
+}
+
+.info-item:hover {
+    background: #4a4a4a;
+}
+
+.info-label {
+    font-weight: 600;
+    color: #ff6b35;
+    width: 80px;
+    flex-shrink: 0;
+}
+
+.info-value {
+    color: #e0e0e0;
+    flex: 1;
+}
+
+.stats-panel {
+    background: #333333;
+    border-radius: 12px;
+    padding: 30px;
+    border: 1px solid #454545;
+    height: fit-content;
+}
+
+.stats-summary {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+    margin-bottom: 30px;
+}
+
+.stat-card {
+    background: #404040;
+    padding: 20px;
+    border-radius: 10px;
+    text-align: center;
+    border: 1px solid #555555;
+    transition: transform 0.3s ease, border-color 0.3s ease;
+}
+
+.stat-card:hover {
+    transform: translateY(-3px);
+    border-color: #ff6b35;
+}
+
+.stat-value {
+    font-size: 2rem;
+    font-weight: 700;
+    color: #ff6b35;
+    margin-bottom: 5px;
+}
+
+.stat-label {
+    color: #cccccc;
+    font-size: 0.9rem;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.recent-sales {
+    margin-top: 30px;
+}
+
+.section-title {
+    font-size: 1.3rem;
+    font-weight: 600;
+    color: #ff6b35;
+    margin-bottom: 20px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.sales-list {
+    background: #404040;
+    border-radius: 10px;
+    padding: 20px;
+    max-height: 300px;
+    overflow-y: auto;
+}
+
+.sales-list::-webkit-scrollbar {
+    width: 6px;
+}
+
+.sales-list::-webkit-scrollbar-track {
+    background: #333333;
+    border-radius: 3px;
+}
+
+.sales-list::-webkit-scrollbar-thumb {
+    background: #ff6b35;
+    border-radius: 3px;
+}
+
+.sale-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 12px 0;
+    border-bottom: 1px solid #555555;
+    transition: background-color 0.3s ease;
+}
+
+.sale-item:last-child {
+    border-bottom: none;
+}
+
+.sale-item:hover {
+    background: #4a4a4a;
+    margin: 0 -10px;
+    padding: 12px 10px;
+    border-radius: 6px;
+}
+
+.car-info {
+    flex: 1;
+}
+
+.car-brand {
+    font-weight: 600;
+    color: #ffffff;
+    font-size: 1rem;
+}
+
+.car-model {
+    color: #cccccc;
+    font-size: 0.9rem;
+}
+
+.sale-date {
+    color: #ff6b35;
+    font-size: 0.85rem;
+    font-weight: 500;
+}
+
+.date-display {
+    text-align: right;
+    margin-bottom: 20px;
+    color: #cccccc;
+    font-size: 0.9rem;
+}
+
+@media (max-width: 768px) {
+    .stats-content {
+        grid-template-columns: 1fr;
+        gap: 30px;
+    }
+
+    .stats-container {
+        padding: 20px;
+    }
+
+    .stats-summary {
+        grid-template-columns: 1fr;
+    }
+}

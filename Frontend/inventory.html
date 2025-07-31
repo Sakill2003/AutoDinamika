@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Car Inventory</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+    <link rel="stylesheet" href="styles/global.css" />
+    <link rel="stylesheet" href="styles/header.css" />
+    <link rel="stylesheet" href="styles/inventory.css" />
+</head>
+<body>
+    <div id="header"></div> 
+    <div class="inventory-section">
+        <div class="section-header">
+            <h1 class="section-title">CAR INVENTORY</h1>
+            <p class="section-subtitle">Cars that are Available</p>
+            
+            <div class="search-filter-container">
+                <div class="search-bar">
+                    <input type="text" id="searchInput" class="search-input" placeholder="Search cars by name or model...">
+                </div>
+                
+                <div class="filter-container">
+                    <select id="brandFilter" class="filter-select">
+                        <option value="">All Brands</option>
+                        <option value="BMW">BMW</option>
+                        <option value="Mercedes-Benz">Mercedes-Benz</option>
+                        <option value="Audi">Audi</option>
+                        <option value="Porsche">Porsche</option>
+                        <option value="Lamborghini">Lamborghini</option>
+                        <option value="McLaren">McLaren</option>
+                    </select>
+                    <span class="filter-arrow">▼</span>
+                </div>
+            </div>
+            
+            <div class="results-info" id="resultsInfo">Showing all vehicles</div>
+        </div>
+
+        <div class="inventory-grid" id="inventoryGrid">
+        </div>
+    </div>
+
+    <div class="modal-overlay" id="modalOverlay">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 class="modal-title" id="modalTitle">Car Details</h2>
+                <button class="close-btn" onclick="closeModal()">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="image-section">
+                    <div class="image-slider">
+                        <button class="slider-nav prev" onclick="prevImage()">&#8249;</button>
+                        <img class="slider-image active" id="image1" src="" alt="Car Image 1">
+                        <img class="slider-image" id="image2" src="" alt="Car Image 2">
+                        <img class="slider-image" id="image3" src="" alt="Car Image 3">
+                        <button class="slider-nav next" onclick="nextImage()">&#8250;</button>
+                    </div>
+                    <div class="image-dots">
+                        <span class="dot active" onclick="currentImage(1)"></span>
+                        <span class="dot" onclick="currentImage(2)"></span>
+                        <span class="dot" onclick="currentImage(3)"></span>
+                    </div>
+                </div>
+                <div class="details-section">
+                    <div class="detail-item">
+                        <div class="detail-label">Model</div>
+                        <div class="detail-value" id="detailModel">-</div>
+                    </div>
+                    <div class="detail-item">
+                        <div class="detail-label">Description</div>
+                        <div class="detail-value" id="detailDescription">-</div>
+                    </div>
+                    <div class="detail-item">
+                        <div class="detail-label">Brand</div>
+                        <div class="detail-value" id="detailBrand">-</div>
+                    </div>
+                    <div class="detail-item">
+                        <div class="detail-label">Year</div>
+                        <div class="detail-value" id="detailYear">-</div>
+                    </div>
+                    <div class="detail-item">
+                        <div class="detail-label">Color</div>
+                        <div class="detail-value" id="detailColor">-</div>
+                    </div>
+                    <div class="detail-item">
+                        <div class="detail-label">Units Available</div>
+                        <div class="detail-value" id="detailUnits">-</div>
+                    </div>
+                    <div class="detail-item">
+                        <div class="detail-label">Price</div>
+                        <div class="detail-value price-highlight" id="detailPrice">-</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+        <script src="scripts/inventory.js"></script>
+</body>
+</html>
