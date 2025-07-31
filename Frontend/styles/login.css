@@ -305,8 +305,6 @@ body {
     opacity: 0.7;
 }
 
-/* Enhanced Responsive Design */
-
 /* Large Desktop (1200px+) */
 @media (min-width: 1200px) {
     .auth-container {

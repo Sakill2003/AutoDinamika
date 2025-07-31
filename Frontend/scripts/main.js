@@ -1,9 +1,19 @@
+
 fetch('components/header.html')
     .then(res => res.text())
     .then(data => {
         document.getElementById('header').innerHTML = data;
         const script = document.createElement('script');
         script.src = 'scripts/header.js';
+        document.body.appendChild(script);
+    });
+
+fetch('components/home.html')
+    .then(res => res.text())
+    .then(data => {
+        document.getElementById('home').innerHTML = data;
+        const script = document.createElement('script');
+        script.src = 'scripts/home.js';
         document.body.appendChild(script);
     });
 
