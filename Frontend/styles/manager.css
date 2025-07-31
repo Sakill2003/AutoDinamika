@@ -12,6 +12,10 @@ body {
     padding: 20px;
 }
 
+#header{
+    padding-bottom: 4%;
+}
+
 .manager-container {
     max-width: 1400px;
     margin: 0 auto;

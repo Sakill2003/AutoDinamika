@@ -14,6 +14,10 @@ body {
     padding: 20px;
 }
 
+#header{
+    padding-bottom: 52%;
+}
+
 .container {
     background: rgba(0, 0, 0, 0.8);
     border-radius: 20px;
@@ -25,12 +29,12 @@ body {
     border: 1px solid rgba(255, 255, 255, 0.1);
 }
 
-.logo {
+.logo-form {
     text-align: center;
     margin-bottom: 30px;
 }
 
-.logo .car-icon {
+.logo-form .car-icon {
     width: 40px;
     height: 25px;
     border: 2px solid #ff6b35;
@@ -38,7 +42,7 @@ body {
     position: relative;
 }
 
-.logo .car-icon::before {
+.logo-form .car-icon::before {
     content: '';
     position: absolute;
     width: 6px;
@@ -49,7 +53,7 @@ body {
     left: 5px;
 }
 
-.logo .car-icon::after {
+.logo-form .car-icon::after {
     content: '';
     position: absolute;
     width: 6px;
@@ -60,7 +64,7 @@ body {
     right: 5px;
 }
 
-.logo p {
+.logo-form p {
     color: #ffffff;
     font-style: italic;
     font-size: 1.2rem;

@@ -91,7 +91,7 @@ const carData = [
         color: "Volcano Orange",
         units: 1,
         images: [
-            "https://images.unsplash.com/photo-1558618047-3c8c76ca7d13?w=600&h=400&fit=crop",
+            "https://images.unsplash.com/photo-1555215695-3004980ad54e?w=600&h=400&fit=crop",
             "https://images.unsplash.com/photo-1555215695-3004980ad54e?w=600&h=400&fit=crop",
             "https://images.unsplash.com/photo-1542362567-b07e54358753?w=600&h=400&fit=crop"
         ]

@@ -1,4 +1,13 @@
 
+fetch('components/header.html')
+    .then(res => res.text())
+    .then(data => {
+        document.getElementById('header').innerHTML = data;
+        const script = document.createElement('script');
+        script.src = 'scripts/header.js';
+        document.body.appendChild(script);
+    }); 
+
 document.addEventListener('DOMContentLoaded', function () {
     const carSelectButton = document.getElementById('carSelectButton');
     const carSelectOptions = document.getElementById('carSelectOptions');

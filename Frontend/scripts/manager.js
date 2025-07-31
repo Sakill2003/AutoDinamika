@@ -1,4 +1,15 @@
 
+
+fetch('components/header.html')
+    .then(res => res.text())
+    .then(data => {
+        document.getElementById('header').innerHTML = data;
+        const script = document.createElement('script');
+        script.src = 'scripts/header.js';
+        document.body.appendChild(script);
+    });
+
+    
 window.addEventListener('load', () => {
     const cards = document.querySelectorAll('.stat-card, .performance-card');
     cards.forEach((card, index) => {

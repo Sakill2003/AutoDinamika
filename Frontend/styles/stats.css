@@ -12,13 +12,16 @@ body {
     padding: 20px;
 }
 
+#header{
+    padding-bottom: 4%;
+}
+
 .stats-container {
     max-width: 1200px;
     margin: 0 auto;
     background: #2a2a2a;
     border-radius: 16px;
     padding: 40px;
-    padding-top: 5%;
     box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
     border: 1px solid #404040;
 }

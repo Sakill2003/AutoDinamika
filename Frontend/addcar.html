@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Add Car to Inventory - Auto Dinamika</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+    <link rel="stylesheet" href="styles/global.css" />
+    <link rel="stylesheet" href="styles/addcar.css" />
+    <link rel="stylesheet" href="styles/header.css" />
+</head>
+<body>
+    <div id="header"></div> 
+    <div class="container">
+        <div class="header">
+            <div class="form-logo">
+                <img src="/Frontend/assets/logo.png">
+            </div>
+            <div class="title">Add New Vehicle</div>
+        </div>
+
+        <div class="success-message" id="successMessage">
+            Vehicle successfully added to inventory!
+        </div>
+
+        <form id="inventoryForm">
+            <div class="form-grid">
+                <div class="form-group">
+                    <label for="brand">Vehicle Brand</label>
+                    <input type="text" id="brand" name="brand" placeholder="e.g., Toyota, BMW, Ford" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="model">Model</label>
+                    <input type="text" id="model" name="model" placeholder="e.g., Camry, X5, Mustang" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="year">Year</label>
+                    <input type="number" id="year" name="year" placeholder="2024" min="1980" max="2025" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="chasis">Chassis Number</label>
+                    <input type="text" id="chasis" name="chasis" placeholder="17-digit VIN" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="motor">Motor Number</label>
+                    <input type="text" id="motor" name="motor" placeholder="Engine serial number" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="price">Price ($)</label>
+                    <input type="number" id="price" name="price" placeholder="25000" min="0" step="100" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="color">Color</label>
+                    <input type="text" id="color" name="color" placeholder="e.g., Red, Blue, Silver" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="units">Units Available</label>
+                    <input type="number" id="units" name="units" placeholder="1" min="1" required>
+                </div>
+            </div>
+
+            <div class="images-section">
+                <div class="images-title">Vehicle Images</div>
+                <div class="images-grid">
+                    <div class="form-group image-input">
+                        <label for="image1">Primary Image URL</label>
+                        <input type="url" id="image1" name="image1" placeholder="https://example.com/car-front.jpg" required>
+                    </div>
+                    
+                    <div class="form-group image-input">
+                        <label for="image2">Secondary Image URL</label>
+                        <input type="url" id="image2" name="image2" placeholder="https://example.com/car-side.jpg" required>
+                    </div>
+                    
+                    <div class="form-group image-input">
+                        <label for="image3">Interior Image URL</label>
+                        <input type="url" id="image3" name="image3" placeholder="https://example.com/car-interior.jpg" required>
+                    </div>
+                </div>
+            </div>
+
+            <button type="submit" class="submit-btn">
+                ADD CAR TO INVENTORY
+            </button>
+        </form>
+    </div>
+    <script src="scripts/addcar.js"></script>
+</body>
+</html>
