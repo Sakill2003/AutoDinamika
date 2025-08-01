@@ -1,9 +1,19 @@
+    /*
+    This function encapsulates all the functionality of the header, so it can be loaded even after the DOM has already been loaded first.
+    */
 function initHeader() {
     const menuButton = document.getElementById('menuButton');
     const dropdownMenu = document.getElementById('dropdownMenu');
     const menuOverlay = document.getElementById('menuOverlay');
     const menuIcon = menuButton.querySelector('i');
     const navbar = document.querySelector('.navbar-header');
+
+
+    /*
+    This function controls the animation of the dropdown menu, there are two different states of the menu, when it's open or closed the icon changes.
+    Args:
+    click: It detects when user clicks on the icon, changing it.
+    */
 
     menuButton.addEventListener('click', () => {
         dropdownMenu.classList.toggle('active');
@@ -51,7 +61,12 @@ function initHeader() {
         navbar.style.transform = 'translateY(0)';
     }, 100);
 
-    // Access control
+    /*
+    This part controls the access to different sections available on the dropdown menu depending on the type of user that logged in, 
+    it uses the local Storage user saved after logging in. 
+    (guest only have access to inventory preview, seller has access to self stats and start a sale, admin has access to add and modify cars).
+    This part changes the login button to log out button after logging in, if the user uses the log out button, it removes the current state.
+    */
     const user = JSON.parse(localStorage.getItem('user')) || { role: 'guest' };
     const loginBtn = document.querySelector('.login-button');
     const menuItems = document.querySelectorAll('.dropdown-menu .nav-link');
@@ -63,7 +78,7 @@ function initHeader() {
         },
         seller: {
             allowed: ['inventory.html', 'stats.html', 'sell.html'],
-            alertOn: ['addcar.html', 'manager.html']
+            alertOn: ['addcar.html', 'manager.html','modify.html']
         },
         admin: {
             allowed: ['inventory.html', 'stats.html', 'sell.html', 'addcar.html', 'manager.html']

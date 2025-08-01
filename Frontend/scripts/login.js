@@ -135,14 +135,15 @@ loginForm.addEventListener('submit', function (e) {
                 role: data.role
             }));
 
-            alert('Login exitoso');
+            alert('Login Successful');
+            location.href ="index.html";
         } else {
             showError('loginPasswordError', data.message || 'Login failed');
         }
     })
     .catch(err => {
         submitBtn.classList.remove('loading');
-        alert('Error de conexión con el servidor');
+        alert('Connection error with the server');
     });
 });
 
@@ -197,14 +198,14 @@ registerForm.addEventListener('submit', function (e) {
         submitBtn.classList.remove('loading');
 
         if (response.success) {
-            alert('Registro exitoso, ahora puedes iniciar sesión');
+            alert('Successful register, now you can log in');
             switchToLogin();
         } else {
-            alert(response.message || 'Error al registrar');
+            alert(response.message || 'Register Error');
         }
     })
     .catch(() => {
         submitBtn.classList.remove('loading');
-        alert('Error de conexión con el servidor');
+        alert('Connection error with the server');
     });
 });
