@@ -96,7 +96,6 @@ registerForm.addEventListener('submit', function (e) {
 
     const email = this.querySelector('input[type="email"]').value;
     const password = this.querySelector('input[placeholder="Password"]').value;
-    const confirmPassword = this.querySelector('input[placeholder="Confirm Password"]').value;
     let hasErrors = false;
 
     if (!email.includes('@')) {
@@ -106,11 +105,6 @@ registerForm.addEventListener('submit', function (e) {
 
     if (password.length < 8) {
         showError('registerPasswordError', 'Password must be at least 8 characters long');
-        hasErrors = true;
-    }
-
-    if (password !== confirmPassword) {
-        showError('confirmPasswordError', 'Passwords do not match');
         hasErrors = true;
     }
 
