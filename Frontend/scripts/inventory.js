@@ -4,7 +4,6 @@ const carData = [
         id: 1,
         name: "BMW M4 Competition",
         model: "M4 Competition",
-        description: "High-performance luxury coupe with twin-turbo engine and advanced aerodynamics.",
         brand: "BMW",
         year: 2023,
         price: "$75,900",
@@ -20,7 +19,6 @@ const carData = [
         id: 2,
         name: "Mercedes-AMG GT",
         model: "AMG GT 63 S",
-        description: "Luxury sports car combining performance with sophisticated comfort and cutting-edge technology.",
         brand: "Mercedes-Benz",
         year: 2023,
         price: "$89,500",
@@ -36,7 +34,6 @@ const carData = [
         id: 3,
         name: "Audi RS7 Sportback",
         model: "RS7 Sportback Performance",
-        description: "Ultimate grand tourer with quattro all-wheel drive and distinctive fastback design.",
         brand: "Audi",
         year: 2024,
         price: "$92,800",
@@ -52,7 +49,6 @@ const carData = [
         id: 4,
         name: "Porsche 911 Turbo S",
         model: "911 Turbo S",
-        description: "Iconic sports car delivering exceptional performance with timeless design and engineering excellence.",
         brand: "Porsche",
         year: 2023,
         price: "$207,000",
@@ -68,7 +64,6 @@ const carData = [
         id: 5,
         name: "Lamborghini Huracán",
         model: "Huracán EVO",
-        description: "Italian supercar with naturally aspirated V10 engine and advanced vehicle dynamics.",
         brand: "Lamborghini",
         year: 2023,
         price: "$248,295",
@@ -84,7 +79,6 @@ const carData = [
         id: 6,
         name: "McLaren 720S",
         model: "720S Performance",
-        description: "British supercar featuring carbon fiber construction and advanced aerodynamics for ultimate performance.",
         brand: "McLaren",
         year: 2022,
         price: "$299,000",
@@ -183,7 +177,6 @@ function openModal(carId) {
 
     document.getElementById('modalTitle').textContent = currentCarData.name;
     document.getElementById('detailModel').textContent = currentCarData.model;
-    document.getElementById('detailDescription').textContent = currentCarData.description;
     document.getElementById('detailBrand').textContent = currentCarData.brand;
     document.getElementById('detailYear').textContent = currentCarData.year;
     document.getElementById('detailPrice').textContent = currentCarData.price;
