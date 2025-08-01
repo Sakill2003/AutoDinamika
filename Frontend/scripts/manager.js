@@ -6,10 +6,13 @@ fetch('components/header.html')
         document.getElementById('header').innerHTML = data;
         const script = document.createElement('script');
         script.src = 'scripts/header.js';
+        script.onload = () => {
+            if (typeof initHeader === 'function') {
+                initHeader();
+            }
+        };
         document.body.appendChild(script);
     });
-
-    
 window.addEventListener('load', () => {
     const cards = document.querySelectorAll('.stat-card, .performance-card');
     cards.forEach((card, index) => {

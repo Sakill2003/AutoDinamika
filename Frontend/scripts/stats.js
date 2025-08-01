@@ -5,10 +5,14 @@ fetch('components/header.html')
         document.getElementById('header').innerHTML = data;
         const script = document.createElement('script');
         script.src = 'scripts/header.js';
+        script.onload = () => {
+            if (typeof initHeader === 'function') {
+                initHeader();
+            }
+        };
         document.body.appendChild(script);
     });
 
-    
 function updateDate() {
     const now = new Date();
     const options = {

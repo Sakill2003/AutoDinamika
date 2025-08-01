@@ -5,6 +5,12 @@ fetch('components/header.html')
         document.getElementById('header').innerHTML = data;
         const script = document.createElement('script');
         script.src = 'scripts/header.js';
+        script.onload = () => {
+            // Llama a initHeader cuando el script haya terminado de cargar
+            if (typeof initHeader === 'function') {
+                initHeader();
+            }
+        };
         document.body.appendChild(script);
     });
 

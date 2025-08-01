@@ -1,12 +1,18 @@
 
+
 fetch('components/header.html')
     .then(res => res.text())
     .then(data => {
         document.getElementById('header').innerHTML = data;
         const script = document.createElement('script');
         script.src = 'scripts/header.js';
+        script.onload = () => {
+            if (typeof initHeader === 'function') {
+                initHeader();
+            }
+        };
         document.body.appendChild(script);
-    }); 
+    });
 
 document.addEventListener('DOMContentLoaded', function () {
     const carSelectButton = document.getElementById('carSelectButton');
