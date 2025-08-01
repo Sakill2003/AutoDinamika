@@ -1,101 +1,9 @@
+// inventory.js actualizado para cargar inventario desde backend
 
-const carData = [
-    {
-        id: 1,
-        name: "BMW M4 Competition",
-        model: "M4 Competition",
-        brand: "BMW",
-        year: 2023,
-        price: "$75,900",
-        color: "Midnight Black",
-        units: 3,
-        images: [
-            "https://images.unsplash.com/photo-1555215695-3004980ad54e?w=600&h=400&fit=crop",
-            "https://images.unsplash.com/photo-1542362567-b07e54358753?w=600&h=400&fit=crop",
-            "https://images.unsplash.com/photo-1619767886558-efdc259cde1a?w=600&h=400&fit=crop"
-        ]
-    },
-    {
-        id: 2,
-        name: "Mercedes-AMG GT",
-        model: "AMG GT 63 S",
-        brand: "Mercedes-Benz",
-        year: 2023,
-        price: "$89,500",
-        color: "Alpine White",
-        units: 2,
-        images: [
-            "https://images.unsplash.com/photo-1618843479313-40f8afb4b4d8?w=600&h=400&fit=crop",
-            "https://images.unsplash.com/photo-1606664515524-ed2f786a0bd6?w=600&h=400&fit=crop",
-            "https://images.unsplash.com/photo-1580273916550-e323be2ae537?w=600&h=400&fit=crop"
-        ]
-    },
-    {
-        id: 3,
-        name: "Audi RS7 Sportback",
-        model: "RS7 Sportback Performance",
-        brand: "Audi",
-        year: 2024,
-        price: "$92,800",
-        color: "Nardo Gray",
-        units: 1,
-        images: [
-            "https://images.unsplash.com/photo-1606664515524-ed2f786a0bd6?w=600&h=400&fit=crop",
-            "https://images.unsplash.com/photo-1544636331-e26879cd4d9b?w=600&h=400&fit=crop",
-            "https://images.unsplash.com/photo-1552519507-da3b142c6e3d?w=600&h=400&fit=crop"
-        ]
-    },
-    {
-        id: 4,
-        name: "Porsche 911 Turbo S",
-        model: "911 Turbo S",
-        brand: "Porsche",
-        year: 2023,
-        price: "$207,000",
-        color: "Guards Red",
-        units: 1,
-        images: [
-            "https://images.unsplash.com/photo-1544636331-e26879cd4d9b?w=600&h=400&fit=crop",
-            "https://images.unsplash.com/photo-1552519507-da3b142c6e3d?w=600&h=400&fit=crop",
-            "https://images.unsplash.com/photo-1555215695-3004980ad54e?w=600&h=400&fit=crop"
-        ]
-    },
-    {
-        id: 5,
-        name: "Lamborghini Huracán",
-        model: "Huracán EVO",
-        brand: "Lamborghini",
-        year: 2023,
-        price: "$248,295",
-        color: "Arancio Borealis",
-        units: 1,
-        images: [
-            "https://images.unsplash.com/photo-1552519507-da3b142c6e3d?w=600&h=400&fit=crop",
-            "https://images.unsplash.com/photo-1558618047-3c8c76ca7d13?w=600&h=400&fit=crop",
-            "https://images.unsplash.com/photo-1542362567-b07e54358753?w=600&h=400&fit=crop"
-        ]
-    },
-    {
-        id: 6,
-        name: "McLaren 720S",
-        model: "720S Performance",
-        brand: "McLaren",
-        year: 2022,
-        price: "$299,000",
-        color: "Volcano Orange",
-        units: 1,
-        images: [
-            "https://images.unsplash.com/photo-1555215695-3004980ad54e?w=600&h=400&fit=crop",
-            "https://images.unsplash.com/photo-1555215695-3004980ad54e?w=600&h=400&fit=crop",
-            "https://images.unsplash.com/photo-1542362567-b07e54358753?w=600&h=400&fit=crop"
-        ]
-    }
-];
-
+let carData = [];
 let currentImageIndex = 0;
 let currentCarData = null;
-let filteredCars = [...carData];
-
+let filteredCars = [];
 
 fetch('components/header.html')
     .then(res => res.text())
@@ -120,16 +28,16 @@ function populateInventory(cars = carData) {
         return;
     }
 
-    cars.forEach(car => {
+    cars.forEach((car, index) => {
         const cardHTML = `
-                    <div class="car-card" onclick="openModal(${car.id})">
-                        <img src="${car.images[0]}" alt="${car.name}" class="car-image">
-                        <div class="car-info">
-                            <h3 class="car-name">${car.name}</h3>
-                            <p class="car-price">${car.price}</p>
-                        </div>
-                    </div>
-                `;
+            <div class="car-card" onclick="openModal(${index})">
+                <img src="${car.imgf}" alt="${car.brand} ${car.model}" class="car-image">
+                <div class="car-info">
+                    <h3 class="car-name">${car.brand} ${car.model}</h3>
+                    <p class="car-price">$${car.price.toLocaleString()}</p>
+                </div>
+            </div>
+        `;
         grid.innerHTML += cardHTML;
     });
 
@@ -150,9 +58,8 @@ function filterCars() {
     const brandFilter = document.getElementById('brandFilter').value;
 
     filteredCars = carData.filter(car => {
-        const matchesSearch = car.name.toLowerCase().includes(searchTerm) ||
-            car.model.toLowerCase().includes(searchTerm) ||
-            car.description.toLowerCase().includes(searchTerm);
+        const matchesSearch = car.model.toLowerCase().includes(searchTerm) ||
+            car.brand.toLowerCase().includes(searchTerm);
         const matchesBrand = !brandFilter || car.brand === brandFilter;
 
         return matchesSearch && matchesBrand;
@@ -168,20 +75,38 @@ document.addEventListener('DOMContentLoaded', function () {
     searchInput.addEventListener('input', filterCars);
     brandFilter.addEventListener('change', filterCars);
 
-    populateInventory();
+    fetch("http://localhost:8080/api/inventory")
+        .then(res => res.json())
+        .then(data => {
+            if (!Array.isArray(data)) {
+                throw new Error("Respuesta inesperada del backend: se esperaba un arreglo.");
+            }
+            carData = data.map((car, idx) => ({
+                ...car,
+                name: `${car.brand} ${car.model}`,
+                images: [car.imgf, car.imgs, car.imgt],
+                id: idx,
+                color: car.color || '-' // ahora se toma del backend
+            }));
+            filteredCars = [...carData];
+            populateInventory();
+        })
+        .catch(err => {
+            console.error("Error cargando inventario:", err);
+        });
 });
 
-function openModal(carId) {
-    currentCarData = carData.find(car => car.id === carId);
+function openModal(index) {
+    currentCarData = filteredCars[index];
     if (!currentCarData) return;
 
     document.getElementById('modalTitle').textContent = currentCarData.name;
     document.getElementById('detailModel').textContent = currentCarData.model;
     document.getElementById('detailBrand').textContent = currentCarData.brand;
     document.getElementById('detailYear').textContent = currentCarData.year;
-    document.getElementById('detailPrice').textContent = currentCarData.price;
-    document.getElementById('detailColor').textContent = currentCarData.color;
-    document.getElementById('detailUnits').textContent = currentCarData.units;
+    document.getElementById('detailPrice').textContent = `$${currentCarData.price.toLocaleString()}`;
+    document.getElementById('detailColor').textContent = currentCarData.color || '-';
+    document.getElementById('detailUnits').textContent = currentCarData.availableUnits;
 
     for (let i = 0; i < 3; i++) {
         document.getElementById(`image${i + 1}`).src = currentCarData.images[i];
@@ -239,5 +164,3 @@ document.addEventListener('keydown', function (e) {
         closeModal();
     }
 });
-
-populateInventory();
