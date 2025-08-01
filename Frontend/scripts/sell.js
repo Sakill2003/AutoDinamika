@@ -84,6 +84,63 @@ document.addEventListener('DOMContentLoaded', function () {
         }
     });
 
+    fetch("http://localhost:8080/api/available-cars")
+    .then(res => res.json())
+    .then(data => {
+        const carSelectOptions = document.getElementById('carSelectOptions');
+        const hiddenCarSelect = document.getElementById('carSelect');
+
+        // Limpia opciones existentes
+        carSelectOptions.innerHTML = '';
+        hiddenCarSelect.innerHTML = '<option value="">Choose your car</option>';
+
+        data.forEach(car => {
+            // --- Visual dropdown option ---
+            const optionDiv = document.createElement('div');
+            optionDiv.className = 'select-option';
+            optionDiv.dataset.value = car.id;
+
+            optionDiv.innerHTML = `
+                <div class="car-image">
+                    <img src="${car.image}" alt="${car.displayName}" style="width:30px; height:auto;">
+                </div>
+                <div class="car-name">${car.displayName}</div>
+            `;
+
+            optionDiv.addEventListener('click', function (e) {
+                e.preventDefault();
+                e.stopPropagation();
+
+                const value = this.dataset.value;
+                const carName = this.querySelector('.car-name').textContent;
+                const carImg = this.querySelector('.car-image').innerHTML;
+
+                selectedCarText.innerHTML = `
+                    <div style="display: flex; align-items: center; gap: 10px;">
+                        ${carImg}
+                        <span>${carName}</span>
+                    </div>
+                `;
+
+                hiddenCarSelect.value = value;
+
+                carSelectOptions.classList.remove('open');
+                carSelectButton.classList.remove('open');
+            });
+
+            carSelectOptions.appendChild(optionDiv);
+
+            // --- Hidden <select> option ---
+            const selectOption = document.createElement('option');
+            selectOption.value = car.id;
+            selectOption.textContent = car.displayName;
+            hiddenCarSelect.appendChild(selectOption);
+        });
+    })
+    .catch(err => {
+        console.error("Error loading available cars:", err);
+    });
+
     document.getElementById('carSellingForm').addEventListener('submit', function (e) {
         e.preventDefault();
 
