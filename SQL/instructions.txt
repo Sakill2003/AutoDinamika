@@ -1,0 +1,12 @@
+To create a database on PostgreSQL 15.13:
+- For Server[localhost]: Press Enter
+- For Database[postgres]: Press Enter
+- For Port[5432]: Press Enter
+- For Username[postgres]: postgres
+- For Contraseña para usuario postgres: The one provided when installing PostgresSQL Shell
+
+Then, to create the database:
+
+CREATE DATABASE AutoDinamika;
+\c autodinamika   (To enter database)
+\i (Path)/AutoDinamika/SQL/script.sql

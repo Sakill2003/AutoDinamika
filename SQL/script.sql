@@ -1,20 +1,27 @@
--- Create Database (optional)
-CREATE DATABASE IF NOT EXISTS AutoDinamika;
-USE AutoDinamika;
+-- ===============================
+-- Drop all tables to avoid errors.
+-- ===============================
+
+DROP TABLE IF EXISTS Sales;
+DROP TABLE IF EXISTS Car;
+DROP TABLE IF EXISTS Customer;
+DROP TABLE IF EXISTS CarModel;
+DROP TABLE IF EXISTS Seller;
+DROP TABLE IF EXISTS Role;
 
 -- ===============================
 -- Table: Role
 -- ===============================
 CREATE TABLE Role (
-    Role_ID INT PRIMARY KEY AUTO_INCREMENT,
+    Role_ID SERIAL PRIMARY KEY,
     Role_Name VARCHAR(50) NOT NULL UNIQUE
 );
 
 -- ===============================
--- Table: User
+-- Table: Seller
 -- ===============================
-CREATE TABLE User (
-    User_ID INT PRIMARY KEY AUTO_INCREMENT,
+CREATE TABLE Seller (
+    Seller_ID SERIAL PRIMARY KEY,
     First_Name VARCHAR(100) NOT NULL,
     Last_Name VARCHAR(100) NOT NULL,
     Birthday_Date DATE,
@@ -23,18 +30,17 @@ CREATE TABLE User (
     Address VARCHAR(100),
     Commissions DECIMAL(10, 2) DEFAULT 0.00,
     Password VARCHAR(255) NOT NULL,
-    Role_ID INT,
-    FOREIGN KEY (Role_ID) REFERENCES Role(Role_ID)
+    Role_ID INT REFERENCES Role(Role_ID)
 );
 
 -- ===============================
 -- Table: CarModel
 -- ===============================
 CREATE TABLE CarModel (
-    Model_ID INT PRIMARY KEY AUTO_INCREMENT,
+    Model_ID SERIAL PRIMARY KEY,
     Brand VARCHAR(100) NOT NULL,
     Model VARCHAR(100) NOT NULL,
-    Year YEAR NOT NULL,
+    Year INT CHECK (Year >= 1980),
     Color VARCHAR(50),
     Price DECIMAL(10, 2) NOT NULL
 );
@@ -45,16 +51,15 @@ CREATE TABLE CarModel (
 CREATE TABLE Car (
     Chasis VARCHAR(100) PRIMARY KEY,
     Motor VARCHAR(100) NOT NULL UNIQUE,
-    Status ENUM('available', 'sold') DEFAULT 'available',
-    Model_ID INT,
-    FOREIGN KEY (Model_ID) REFERENCES CarModel(Model_ID)
+    Status VARCHAR(20) DEFAULT 'available' CHECK (Status IN ('available', 'sold')),
+    Model_ID INT REFERENCES CarModel(Model_ID)
 );
 
 -- ===============================
 -- Table: Customer
 -- ===============================
 CREATE TABLE Customer (
-    Customer_ID INT PRIMARY KEY AUTO_INCREMENT,
+    Customer_ID SERIAL PRIMARY KEY,
     Name VARCHAR(150) NOT NULL,
     ID_Type VARCHAR(50) NOT NULL,
     Document_Number VARCHAR(100) NOT NULL UNIQUE
@@ -64,15 +69,12 @@ CREATE TABLE Customer (
 -- Table: Sales
 -- ===============================
 CREATE TABLE Sales (
-    Sale_ID INT PRIMARY KEY AUTO_INCREMENT,
-    User_ID INT,
-    Chasis VARCHAR(100),
-    Customer_ID INT,
+    Sale_ID SERIAL PRIMARY KEY,
+    Seller_ID INT REFERENCES Seller(Seller_ID),
+    Chasis VARCHAR(100) REFERENCES Car(Chasis),
+    Customer_ID INT REFERENCES Customer(Customer_ID),
     Payment VARCHAR(100),
-    Date DATE DEFAULT CURRENT_DATE,
-    FOREIGN KEY (User_ID) REFERENCES User(User_ID),
-    FOREIGN KEY (Chasis) REFERENCES Car(Chasis),
-    FOREIGN KEY (Customer_ID) REFERENCES Customer(Customer_ID)
+    Date DATE DEFAULT CURRENT_DATE
 );
 
 -- ===============================
@@ -85,8 +87,8 @@ INSERT INTO Role (Role_Name) VALUES
 ('seller'),
 ('admin');
 
--- Users
-INSERT INTO User (First_Name, Last_Name, Birthday_Date, Phone, Email, Address, Password, Role_ID)
+-- Sellers
+INSERT INTO Seller (First_Name, Last_Name, Birthday_Date, Phone, Email, Address, Password, Role_ID)
 VALUES
 ('Carlos', 'Ramírez', '1990-05-12', '3011234567', 'carlos@email.com', 'Calle 123', 'pass123', 2),
 ('Laura', 'Gómez', '1988-09-23', '3027654321', 'laura@email.com', 'Carrera 45', 'pass456', 3);
@@ -111,6 +113,6 @@ VALUES
 ('Ana Torres', 'CE', '5060708090');
 
 -- Sales
-INSERT INTO Sales (User_ID, Chasis, Customer_ID, Payment, Date)
+INSERT INTO Sales (Seller_ID, Chasis, Customer_ID, Payment, Date)
 VALUES
 (1, 'CHS789GHI', 1, 'tarjeta de crédito', '2025-07-28');
