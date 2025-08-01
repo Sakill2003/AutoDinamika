@@ -7,6 +7,9 @@ const registerForm = document.getElementById('registerForm');
 
 let isLogin = true;
 
+/*
+This function is called when the user clicks on Login button. It hides register section.
+*/
 
 function switchToLogin() {
     if (!isLogin) {
@@ -18,6 +21,10 @@ function switchToLogin() {
         registerForm.classList.remove('show');
     }
 }
+
+/*
+This function is called when the user clicks on Register button. It hides login section.
+*/
 
 function switchToRegister() {
     if (isLogin) {
@@ -66,16 +73,42 @@ function clearAllErrors(form) {
     });
 }
 
+/*
+This function is a visual parallax that detects mouse movements to move the background image.
+Args:
+    mousemove: The movement detected of the mouse on X and Y axis.
+*/
+
+document.addEventListener('mousemove', function (e) {
+    const mouseX = e.clientX / window.innerWidth;
+    const mouseY = e.clientY / window.innerHeight;
+
+    const background = document.querySelector('.background');
+    background.style.transform = `translate(${mouseX * 20}px, ${mouseY * 20}px) scale(1.1)`;
+});
+
+/*
+This function controlls the login form, saves the input values, detect syntaxis errors and comunicates with database to compare users with the inputs.
+If login is succesful, it saves the current state depending on the type of user (seller or admin).
+Args:
+   submit: This function has the values of email and password.
+*/
 
 loginForm.addEventListener('submit', function (e) {
     e.preventDefault();
     clearAllErrors(this);
 
     const email = this.querySelector('input[type="email"]').value;
+    const password = this.querySelector('input[type="password"]').value;
     let hasErrors = false;
 
     if (!email.includes('@')) {
         showError('loginEmailError', 'Please enter a valid email address with @');
+        hasErrors = true;
+    }
+
+    if (!password) {
+        showError('loginPasswordError', 'Please enter your password');
         hasErrors = true;
     }
 
@@ -84,26 +117,65 @@ loginForm.addEventListener('submit', function (e) {
     const submitBtn = this.querySelector('.submit-btn');
     submitBtn.classList.add('loading');
 
-    setTimeout(() => {
+    fetch('http://localhost:8080/auth/login', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ email, password })
+    })
+    .then(res => res.json())
+    .then(data => {
         submitBtn.classList.remove('loading');
-        alert('Login successful! (This is a demo)');
-    }, 2000);
+
+        if (data.success) {
+            localStorage.setItem('user', JSON.stringify({
+                id: data.seller_ID,
+                name: data.name,
+                role: data.role
+            }));
+
+            alert('Login exitoso');
+        } else {
+            showError('loginPasswordError', data.message || 'Login failed');
+        }
+    })
+    .catch(err => {
+        submitBtn.classList.remove('loading');
+        alert('Error de conexión con el servidor');
+    });
 });
+
+/*
+This function controlls the register form, saves the input values, detect syntaxis errors and comunicates with database to register the user.
+The function detects errors on the form and alerts the user if there is an error.
+Args:
+   submit: This function has the values of the user (name, birthday date, email, phone, address, password).
+*/
 
 registerForm.addEventListener('submit', function (e) {
     e.preventDefault();
     clearAllErrors(this);
 
-    const email = this.querySelector('input[type="email"]').value;
-    const password = this.querySelector('input[placeholder="Password"]').value;
+    const inputs = registerForm.querySelectorAll('input');
+    const data = {
+        first_Name: inputs[0].value,
+        last_Name: inputs[1].value,
+        birthday_Date: inputs[2].value,
+        email: inputs[3].value,
+        phone: inputs[4].value,
+        address: inputs[5].value,
+        password: inputs[6].value
+    };
+
     let hasErrors = false;
 
-    if (!email.includes('@')) {
+    if (!data.email.includes('@')) {
         showError('registerEmailError', 'Please enter a valid email address with @');
         hasErrors = true;
     }
 
-    if (password.length < 8) {
+    if (data.password.length < 8) {
         showError('registerPasswordError', 'Password must be at least 8 characters long');
         hasErrors = true;
     }
@@ -113,17 +185,26 @@ registerForm.addEventListener('submit', function (e) {
     const submitBtn = this.querySelector('.submit-btn');
     submitBtn.classList.add('loading');
 
-    setTimeout(() => {
+    fetch('http://localhost:8080/auth/register', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(data)
+    })
+    .then(res => res.json())
+    .then(response => {
         submitBtn.classList.remove('loading');
-        alert('Account created successfully! (This is a demo)');
-        switchToLogin();
-    }, 2000);
-});
 
-document.addEventListener('mousemove', function (e) {
-    const mouseX = e.clientX / window.innerWidth;
-    const mouseY = e.clientY / window.innerHeight;
-
-    const background = document.querySelector('.background');
-    background.style.transform = `translate(${mouseX * 20}px, ${mouseY * 20}px) scale(1.1)`;
+        if (response.success) {
+            alert('Registro exitoso, ahora puedes iniciar sesión');
+            switchToLogin();
+        } else {
+            alert(response.message || 'Error al registrar');
+        }
+    })
+    .catch(() => {
+        submitBtn.classList.remove('loading');
+        alert('Error de conexión con el servidor');
+    });
 });
