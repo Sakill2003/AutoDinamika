@@ -6,26 +6,19 @@ import java.util.*;
 @Entity
 @Table(name = "car")
 public class Car {
+
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long carId;
+    @Column(name = "chasis")
+    private String chassisNumber;
+
+    @Column(name = "motor")
+    private String engineNumber;
+
+    private String status;
 
     @ManyToOne
     @JoinColumn(name = "model_id")
     private CarModel carModel;
-
-    private String chassisNumber;
-    private String engineNumber;
-
-    private String status;     // 'available' or 'sold'
-
-    public Long getCarId() {
-        return this.carId;
-    }
-
-    public void setCarId(Long carId) {
-        this.carId = carId;
-    }
 
     public CarModel getCarModel() {
         return this.carModel;

@@ -1,16 +1,16 @@
 package autodinamika.api.dto;
 
 public class CarUnitDTO {
-    private Long id;
+    private String chasis;
     private String displayName;
     private String image;
 
-    public Long getId() {
-        return this.id;
+    public String getChasis() {
+        return this.chasis;
     }
 
-    public void setId(Long id) {
-        this.id = id;
+    public void setChasis(String chasis) {
+        this.chasis = chasis;
     }
 
     public String getDisplayName() {

@@ -2,7 +2,6 @@ package autodinamika.api.model;
 
 import jakarta.persistence.*;
 
-import java.math.BigDecimal;
 import java.util.*;
 
 @Entity
@@ -16,7 +15,7 @@ public class CarModel {
     private String model;
     private int year;
     private String color;
-    private BigDecimal price;
+    private Double price;
     private String imgf;
     private String imgs;
     private String imgt;
@@ -61,11 +60,11 @@ public class CarModel {
         this.color = color;
     }
 
-    public BigDecimal getPrice() {
+    public Double getPrice() {
         return this.price;
     }
 
-    public void setPrice(BigDecimal price) {
+    public void setPrice(Double price) {
         this.price = price;
     }
 

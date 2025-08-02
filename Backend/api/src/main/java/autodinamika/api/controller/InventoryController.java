@@ -31,6 +31,9 @@ public class InventoryController {
         for (CarModel model : models) {
             int availableUnits = carRepository.countByCarModelAndStatus(model, "available");
 
+            if (availableUnits == 0) {
+            continue;
+        }
             CarModelDTO dto = new CarModelDTO();
             dto.setBrand(model.getBrand());
             dto.setModel(model.getModel());

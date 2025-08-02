@@ -85,61 +85,60 @@ document.addEventListener('DOMContentLoaded', function () {
     });
 
     fetch("http://localhost:8080/api/available-cars")
-    .then(res => res.json())
-    .then(data => {
-        const carSelectOptions = document.getElementById('carSelectOptions');
-        const hiddenCarSelect = document.getElementById('carSelect');
+        .then(res => res.json())
+        .then(data => {
+            const carSelectOptions = document.getElementById('carSelectOptions');
+            const hiddenCarSelect = document.getElementById('carSelect');
 
-        // Limpia opciones existentes
-        carSelectOptions.innerHTML = '';
-        hiddenCarSelect.innerHTML = '<option value="">Choose your car</option>';
+            carSelectOptions.innerHTML = '';
+            hiddenCarSelect.innerHTML = '<option value="">Choose your car</option>';
 
-        data.forEach(car => {
-            // --- Visual dropdown option ---
-            const optionDiv = document.createElement('div');
-            optionDiv.className = 'select-option';
-            optionDiv.dataset.value = car.id;
+            data.forEach(car => {
+                // --- Visual dropdown option ---
+                const optionDiv = document.createElement('div');
+                optionDiv.className = 'select-option';
+                optionDiv.dataset.value = car.chasis;
 
-            optionDiv.innerHTML = `
+                optionDiv.innerHTML = `
                 <div class="car-image">
                     <img src="${car.image}" alt="${car.displayName}" style="width:30px; height:auto;">
                 </div>
                 <div class="car-name">${car.displayName}</div>
             `;
 
-            optionDiv.addEventListener('click', function (e) {
-                e.preventDefault();
-                e.stopPropagation();
+                optionDiv.addEventListener('click', function (e) {
+                    e.preventDefault();
+                    e.stopPropagation();
 
-                const value = this.dataset.value;
-                const carName = this.querySelector('.car-name').textContent;
-                const carImg = this.querySelector('.car-image').innerHTML;
+                    const value = this.dataset.value;
+                    const carName = this.querySelector('.car-name').textContent;
+                    const carImg = this.querySelector('.car-image').innerHTML;
 
-                selectedCarText.innerHTML = `
+                    selectedCarText.innerHTML = `
                     <div style="display: flex; align-items: center; gap: 10px;">
                         ${carImg}
                         <span>${carName}</span>
                     </div>
                 `;
 
-                hiddenCarSelect.value = value;
+                    hiddenCarSelect.value = value;
 
-                carSelectOptions.classList.remove('open');
-                carSelectButton.classList.remove('open');
+                    carSelectOptions.classList.remove('open');
+                    carSelectButton.classList.remove('open');
+                });
+
+                carSelectOptions.appendChild(optionDiv);
+
+                // --- Hidden <select> option ---
+                const selectOption = document.createElement('option');
+                selectOption.value = car.chasis;
+                selectOption.textContent = car.displayName;
+                hiddenCarSelect.appendChild(selectOption);
             });
-
-            carSelectOptions.appendChild(optionDiv);
-
-            // --- Hidden <select> option ---
-            const selectOption = document.createElement('option');
-            selectOption.value = car.id;
-            selectOption.textContent = car.displayName;
-            hiddenCarSelect.appendChild(selectOption);
+        })
+        .catch(err => {
+            console.error("Error loading available cars:", err);
         });
-    })
-    .catch(err => {
-        console.error("Error loading available cars:", err);
-    });
 
     document.getElementById('carSellingForm').addEventListener('submit', function (e) {
         e.preventDefault();
@@ -152,23 +151,40 @@ document.addEventListener('DOMContentLoaded', function () {
             return;
         }
 
-        alert('Car sale confirmed successfully!\n\nDetails:\n' +
-            'Customer: ' + data.firstName + ' ' + data.lastName + '\n' +
-            'ID: ' + data.idType + ' - ' + data.idNumber + '\n' +
-            'Payment: ' + data.paymentMethod.toUpperCase() + '\n' +
-            'Car: ' + hiddenCarSelect.selectedOptions[0].text);
+        const user = JSON.parse(localStorage.getItem('user'));
 
-        this.reset();
-        selectedCarText.textContent = 'Choose your car';
-    });
+        const salePayload = {
+            customerFirstName: data.firstName,
+            customerLastName: data.lastName,
+            idType: data.idType,
+            documentNumber: data.idNumber,
+            paymentMethod: data.paymentMethod,
+            chasis: data.carSelect,
+            sellerId: user.id
+        };
 
-    document.querySelectorAll('input, select').forEach(field => {
-        field.addEventListener('focus', function () {
-            this.parentElement.style.transform = 'translateY(-2px)';
-        });
-
-        field.addEventListener('blur', function () {
-            this.parentElement.style.transform = 'translateY(0)';
-        });
+        fetch("http://localhost:8080/api/sell-car", {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(salePayload)
+        })
+            .then(res => res.json())
+            .then(result => {
+                console.log(salePayload)
+                if (result.success) {
+                    alert('Car sale successful!\nCommission earned: $' + result.commission.toFixed(2));
+                    document.getElementById('carSellingForm').reset();
+                    selectedCarText.textContent = 'Choose your car';
+                    location.reload();
+                } else {
+                    alert('Sale failed: ' + result.message);
+                }
+            })
+            .catch(err => {
+                console.error("Sale error:", err);
+                alert('Error processing sale.');
+            });
     });
 });
