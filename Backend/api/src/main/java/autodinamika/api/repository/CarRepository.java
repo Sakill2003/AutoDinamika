@@ -12,4 +12,5 @@ public interface CarRepository extends JpaRepository<Car,String> {
     int countByCarModelAndStatus(CarModel carModel, String status);
     List<Car> findByStatus(String status);
     Optional<Car> findByChassisNumberAndStatus(String chassisNumber, String status);
+    boolean existsByChassisNumberOrEngineNumber(String chassisNumber, String engineNumber);
 }

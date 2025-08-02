@@ -43,3 +43,35 @@ document.querySelectorAll('.list-item').forEach(item => {
         item.style.transform = 'translateX(0) scale(1)';
     });
 });
+
+document.addEventListener('DOMContentLoaded', () => {
+    fetch("http://localhost:8080/api/manager/stats")
+        .then(res => res.json())
+        .then(data => {
+            console.log("DATA:", data);
+            document.querySelectorAll('.stat-value')[0].textContent = data.totalSales;
+            document.querySelectorAll('.stat-value')[1].textContent = `$${data.totalCollected.toLocaleString()}`;
+            document.querySelectorAll('.stat-value')[2].textContent = `$${data.earnings.toLocaleString()}`;
+
+            function fillList(containerSelector, items) {
+                const container = document.querySelector(containerSelector);
+                container.innerHTML = '';
+                items.forEach((item, index) => {
+                    container.innerHTML += `
+                        <div class="list-item">
+                            <div class="item-rank">${index + 1}</div>
+                            <div class="item-name">${item.name}</div>
+                            <div class="item-value">${item.value} sales</div>
+                        </div>`;
+                });
+            }
+
+            fillList(".performance-section .performance-card:nth-child(1) .performance-list", data.topSellers);
+            fillList(".performance-section .performance-card:nth-child(2) .performance-list", data.topBrands);
+            fillList(".performance-section .performance-card:nth-child(3) .performance-list", data.topModels);
+        })
+
+        .catch(err => {
+            console.error("Failed to load manager stats", err);
+        });
+});
