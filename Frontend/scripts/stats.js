@@ -39,3 +39,43 @@ window.addEventListener('load', () => {
         }, index * 200);
     });
 });
+
+document.addEventListener('DOMContentLoaded', () => {
+    const user = JSON.parse(localStorage.getItem('user'));
+
+    document.getElementById('currentDate').textContent = new Date().toLocaleDateString();
+
+    fetch(`http://localhost:8080/api/seller/stats/${user.id}`)
+        .then(res => res.json())
+        .then(data => {
+
+            document.getElementById('seller-age').textContent = `${data.age} years`;
+            document.getElementById('seller-birth').textContent = data.birthDate;
+            document.getElementById('seller-phone').textContent = data.phone;
+            document.getElementById('seller-email').textContent = data.email;
+            document.getElementById('seller-address').textContent = data.address;
+
+            document.getElementById('seller-commissions').textContent = `$${data.totalCommissions.toLocaleString()}`;
+            document.getElementById('seller-sales').textContent = data.totalSales;
+
+            const salesList = document.getElementById('sales-list');
+            salesList.innerHTML = '';
+
+            data.latestSales.forEach(sale => {
+                const item = document.createElement('div');
+                item.classList.add('sale-item');
+                item.innerHTML = `
+                    <div class="car-info">
+                        <div class="car-brand">${sale.brand}</div>
+                        <div class="car-model">${sale.model} ${sale.year}</div>
+                    </div>
+                    <div class="sale-date">${sale.saleDate}</div>
+                `;
+                salesList.appendChild(item);
+            });
+        })
+        .catch(err => {
+            console.error('Error fetching seller stats:', err);
+            alert('Failed to load statistics');
+        });
+});

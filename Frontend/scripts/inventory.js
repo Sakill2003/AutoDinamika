@@ -1,4 +1,3 @@
-// inventory.js actualizado para cargar inventario desde backend
 
 let carData = [];
 let currentImageIndex = 0;
@@ -86,7 +85,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 name: `${car.brand} ${car.model}`,
                 images: [car.imgf, car.imgs, car.imgt],
                 id: idx,
-                color: car.color || '-' // ahora se toma del backend
+                color: car.color || '-'
             }));
             filteredCars = [...carData];
             populateInventory();
