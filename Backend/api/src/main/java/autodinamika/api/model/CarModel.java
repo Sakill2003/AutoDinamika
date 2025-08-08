@@ -1,7 +1,7 @@
 package autodinamika.api.model;
 
 import jakarta.persistence.*;
-
+import java.math.BigDecimal;
 import java.util.*;
 
 @Entity
@@ -15,10 +15,18 @@ public class CarModel {
     private String model;
     private int year;
     private String color;
-    private Double price;
+
+    // Cambio aquí: Double → BigDecimal
+    private BigDecimal price;
+
     private String imgf;
     private String imgs;
     private String imgt;
+
+    @OneToMany(mappedBy = "carModel")
+    private List<Car> cars;
+
+    // Getters y setters
 
     public Long getModelId() {
         return this.modelId;
@@ -60,11 +68,11 @@ public class CarModel {
         this.color = color;
     }
 
-    public Double getPrice() {
+    public BigDecimal getPrice() {
         return this.price;
     }
 
-    public void setPrice(Double price) {
+    public void setPrice(BigDecimal price) {
         this.price = price;
     }
 
@@ -92,7 +100,11 @@ public class CarModel {
         this.imgt = imgt;
     }
 
-    @OneToMany(mappedBy = "carModel")
-    private List<Car> cars;
-}
+    public List<Car> getCars() {
+        return cars;
+    }
 
+    public void setCars(List<Car> cars) {
+        this.cars = cars;
+    }
+}

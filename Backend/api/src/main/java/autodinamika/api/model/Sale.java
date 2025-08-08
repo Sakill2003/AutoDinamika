@@ -1,6 +1,7 @@
 package autodinamika.api.model;
 
 import java.time.LocalDate;
+import java.math.BigDecimal;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -34,6 +35,11 @@ public class Sale {
 
     private LocalDate date = LocalDate.now();
 
+    // Nueva propiedad para comisión
+    // (Si no la tienes, agrégala)
+    @jakarta.persistence.Column(name = "commission", precision = 10, scale = 2)
+    private BigDecimal commission;
+
     public Long getSaleId() {
         return this.saleId;
     }
@@ -41,7 +47,7 @@ public class Sale {
     public void setSaleId(Long saleId) {
         this.saleId = saleId;
     }
-    
+
     public Seller getSeller() {
         return this.seller;
     }
@@ -82,4 +88,11 @@ public class Sale {
         this.date = date;
     }
 
+    public BigDecimal getCommission() {
+        return this.commission;
+    }
+
+    public void setCommission(BigDecimal commission) {
+        this.commission = commission;
+    }
 }

@@ -2,6 +2,7 @@ package autodinamika.api.model;
 
 import jakarta.persistence.*;
 import java.time.LocalDate;
+import java.math.BigDecimal;
 
 @Entity
 public class Seller {
@@ -16,7 +17,7 @@ public class Seller {
     private String email;
     private String address;
 
-    private Double commissions = 0.0;
+    private BigDecimal commissions = BigDecimal.ZERO;
 
     private String password;
 
@@ -82,11 +83,11 @@ public class Seller {
         this.address = address;
     }
 
-    public Double getCommissions() {
-        return commissions;
+    public BigDecimal getCommissions() {
+    return commissions;
     }
 
-    public void setCommissions(Double commissions) {
+    public void setCommissions(BigDecimal commissions) {
         this.commissions = commissions;
     }
 

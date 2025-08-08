@@ -5,6 +5,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.math.BigDecimal;
+import java.math.RoundingMode;
+
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -80,13 +83,22 @@ public class CarSaleController {
             sale.setCustomer(customer);
             sale.setSeller(seller);
             sale.setPayment(req.paymentMethod);
+            
+            // Guardar la venta primero para obtener ID si se usa
             saleRepository.save(sale);
 
             car.setStatus("sold");
             carRepository.save(car);
 
-            double commission = car.getCarModel().getPrice() * 0.10;
-            seller.setCommissions(seller.getCommissions() + commission);
+            // Calcular comisión: 10% del precio usando BigDecimal
+            BigDecimal price = car.getCarModel().getPrice();
+            BigDecimal commission = price.multiply(BigDecimal.valueOf(0.10))
+                                         .setScale(2, RoundingMode.HALF_UP);
+
+            // Actualizar las comisiones del vendedor también usando BigDecimal
+            BigDecimal currentCommissions = seller.getCommissions() != null ? seller.getCommissions() : BigDecimal.ZERO;
+            BigDecimal updatedCommissions = currentCommissions.add(commission);
+            seller.setCommissions(updatedCommissions);
             sellerRepository.save(seller);
 
             Map<String, Object> response = new HashMap<>();
@@ -101,5 +113,4 @@ public class CarSaleController {
             return ResponseEntity.badRequest().body(response);
         }
     }
-
 }

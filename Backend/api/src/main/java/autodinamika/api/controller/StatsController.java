@@ -1,67 +1,62 @@
 package autodinamika.api.controller;
 
-import java.time.LocalDate;
-import java.time.Period;
-import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.Optional;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
-
-import autodinamika.api.dto.SaleInfoDTO;
-import autodinamika.api.dto.SellerStatsDTO;
-import autodinamika.api.model.CarModel;
 import autodinamika.api.model.Sale;
 import autodinamika.api.model.Seller;
 import autodinamika.api.repository.SaleRepository;
 import autodinamika.api.repository.SellerRepository;
 
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+
 @RestController
-@RequestMapping("/api")
+@RequestMapping("/stats")
 public class StatsController {
 
-    @Autowired
-    private SaleRepository saleRepository;
-    @Autowired
-    private SellerRepository sellerRepository;
+    private final SellerRepository sellerRepository;
+    private final SaleRepository saleRepository;
 
-    @GetMapping("/seller/stats/{id}")
-    public ResponseEntity<SellerStatsDTO> getSellerStats(@PathVariable Long id) {
-        Seller seller = sellerRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Seller not found"));
+    public StatsController(SellerRepository sellerRepository, SaleRepository saleRepository) {
+        this.sellerRepository = sellerRepository;
+        this.saleRepository = saleRepository;
+    }
 
-        SellerStatsDTO dto = new SellerStatsDTO();
-        dto.setFullName(seller.getFirst_Name() + " " + seller.getLast_Name());
-        dto.setBirthDate(seller.getBirthday_Date().toString());
-        dto.setAge(Period.between(seller.getBirthday_Date(), LocalDate.now()).getYears());
-        dto.setPhone(seller.getPhone());
-        dto.setEmail(seller.getEmail());
-        dto.setAddress(seller.getAddress());
-        dto.setTotalCommissions(seller.getCommissions());
+    @GetMapping("/seller/{id}")
+    public ResponseEntity<?> getSellerStats(@PathVariable("id") Long sellerId) {
+        Optional<Seller> optionalSeller = sellerRepository.findById(sellerId);
 
-        int totalSales = saleRepository.countBySeller(seller);
-        dto.setTotalSales(totalSales);
+        if (optionalSeller.isEmpty()) {
+            // Retornar 404 con mensaje 
+            Map<String, String> errorResponse = Map.of("message", "Seller not found");
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(errorResponse);
+        }
+
+        Seller seller = optionalSeller.get();
+
+        // Validar que birthday_Date no sea null
+        String birthdayStr = "";
+        if (seller.getBirthday_Date() != null) {
+            birthdayStr = seller.getBirthday_Date().toString();
+        } else {
+            birthdayStr = "No disponible";  
+        }
 
         List<Sale> recentSales = saleRepository.findTop7BySellerOrderByDateDesc(seller);
 
-        List<SaleInfoDTO> salesInfo = recentSales.stream().map(sale -> {
-            CarModel model = sale.getCar().getCarModel();
+        Map<String, Object> response = new HashMap<>();
+        response.put("sellerId", seller.getSeller_ID());
+        response.put("sellerName", seller.getFirst_Name() + " " + seller.getLast_Name());
+        response.put("birthday", birthdayStr);
+        response.put("recentSales", recentSales);
 
-            SaleInfoDTO s = new SaleInfoDTO();
-            s.setBrand(model.getBrand());
-            s.setModel(model.getModel());
-            s.setYear(model.getYear());
-            s.setSaleDate(sale.getDate().toString());
-            return s;
-        }).toList();
 
-        dto.setLatestSales(salesInfo);
-
-        return ResponseEntity.ok(dto);
+        return ResponseEntity.ok(response);
     }
 
 }
+
