@@ -51,7 +51,6 @@ public class AuthController {
 
         Optional<Seller> sellerOpt = sellerRepository.findByEmail(email);
 
-
         if (sellerOpt.isEmpty() || !sellerOpt.get().getPassword().equals(password)) {
             return Map.of("success", false, "message", "Invalid credentials");
         }

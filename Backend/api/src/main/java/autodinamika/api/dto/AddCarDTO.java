@@ -1,6 +1,5 @@
 package autodinamika.api.dto;
 
-import java.math.BigDecimal;
 
 public class AddCarDTO {
     private String brand;
@@ -8,7 +7,7 @@ public class AddCarDTO {
     private int year;
     private String chassisNumber;
     private String engineNumber;
-    private BigDecimal price;  
+    private Double price;
     private String color;
     private String imgf;
     private String imgs;
@@ -54,11 +53,11 @@ public class AddCarDTO {
         this.engineNumber = engineNumber;
     }
 
-    public BigDecimal getPrice() {
+    public Double getPrice() {
         return this.price;
     }
 
-    public void setPrice(BigDecimal price) {
+    public void setPrice(Double price) {
         this.price = price;
     }
 
@@ -93,4 +92,5 @@ public class AddCarDTO {
     public void setImgt(String imgt) {
         this.imgt = imgt;
     }
+
 }

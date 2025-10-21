@@ -3,6 +3,14 @@ package com.autodinamikasystem.model;
 import jakarta.persistence.*;
 import java.time.LocalDate;
 
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.Table;
+
 @Entity
 @Table(name = "sales")
 public class Sale {
@@ -25,34 +33,16 @@ public class Sale {
 
     private LocalDate date;
 
-    private double price;
+    private LocalDate date = LocalDate.now();
 
-    private double commission;
-
-    public Sale() {}
-
-    public Sale(Car car, Seller seller, Customer customer, LocalDate date, double price, double commission) {
-        this.car = car;
-        this.seller = seller;
-        this.customer = customer;
-        this.date = date;
-        this.price = price;
-        this.commission = commission;
-    }
-
-    // Getters and setters
-    public Long getId() {
-        return id;
-    }
-
-    public Car getCar() {
-        return car;
+    public Long getSaleId() {
+        return this.saleId;
     }
 
     public void setCar(Car car) {
         this.car = car;
     }
-
+    
     public Seller getSeller() {
         return seller;
     }
@@ -77,19 +67,4 @@ public class Sale {
         this.date = date;
     }
 
-    public double getPrice() {
-        return price;
-    }
-
-    public void setPrice(double price) {
-        this.price = price;
-    }
-
-    public double getCommission() {
-        return commission;
-    }
-
-    public void setCommission(double commission) {
-        this.commission = commission;
-    }
 }

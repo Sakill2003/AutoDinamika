@@ -1,13 +1,11 @@
 package autodinamika.api.dto;
 
-import java.math.BigDecimal;
-
 public class CarModelDTO {
     private String brand;
     private String model;
     private int year;
     private String color;
-    private BigDecimal price;
+    private int price;
     private String imgf;
     private String imgs;
     private String imgt;
@@ -45,11 +43,11 @@ public class CarModelDTO {
         this.color = color;
     }
 
-    public BigDecimal getPrice() {
+    public int getPrice() {
         return this.price;
     }
 
-    public void setPrice(BigDecimal price) {
+    public void setPrice(int price) {
         this.price = price;
     }
 

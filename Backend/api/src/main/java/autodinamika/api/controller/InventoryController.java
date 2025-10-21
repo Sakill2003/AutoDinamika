@@ -2,8 +2,6 @@ package autodinamika.api.controller;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.math.BigDecimal;
-
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -41,7 +39,7 @@ public class InventoryController {
             dto.setModel(model.getModel());
             dto.setYear(model.getYear());
             dto.setColor(model.getColor());
-            dto.setPrice(model.getPrice());
+            dto.setPrice(model.getPrice().intValue());
             dto.setImgf(model.getImgf());
             dto.setImgs(model.getImgs());
             dto.setImgt(model.getImgt());
