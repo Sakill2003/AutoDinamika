@@ -1,98 +1,95 @@
-package autodinamika.api.model;
+package com.autodinamikasystem.model;
 
+import jakarta.persistence.*;
 import java.time.LocalDate;
-import java.math.BigDecimal;
-
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
-import jakarta.persistence.Table;
 
 @Entity
-@Table(name = "Sales")
+@Table(name = "sales")
 public class Sale {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long saleId;
+    private Long id;
 
     @ManyToOne
-    @JoinColumn(name = "seller_id")
-    private Seller seller;
-
-    @ManyToOne
-    @JoinColumn(name = "chasis")
+    @JoinColumn(name = "car_id", nullable = false)
     private Car car;
 
     @ManyToOne
-    @JoinColumn(name = "customer_id")
+    @JoinColumn(name = "seller_id", nullable = false)
+    private Seller seller;
+
+    @ManyToOne
+    @JoinColumn(name = "customer_id", nullable = false)
     private Customer customer;
 
-    private String payment;
+    private LocalDate date;
 
-    private LocalDate date = LocalDate.now();
+    private double price;
 
-    // Nueva propiedad para comisión
-    // (Si no la tienes, agrégala)
-    @jakarta.persistence.Column(name = "commission", precision = 10, scale = 2)
-    private BigDecimal commission;
+    private double commission;
 
-    public Long getSaleId() {
-        return this.saleId;
-    }
+    public Sale() {}
 
-    public void setSaleId(Long saleId) {
-        this.saleId = saleId;
-    }
-
-    public Seller getSeller() {
-        return this.seller;
-    }
-
-    public void setSeller(Seller seller) {
+    public Sale(Car car, Seller seller, Customer customer, LocalDate date, double price, double commission) {
+        this.car = car;
         this.seller = seller;
+        this.customer = customer;
+        this.date = date;
+        this.price = price;
+        this.commission = commission;
+    }
+
+    // Getters and setters
+    public Long getId() {
+        return id;
     }
 
     public Car getCar() {
-        return this.car;
+        return car;
     }
 
     public void setCar(Car car) {
         this.car = car;
     }
 
+    public Seller getSeller() {
+        return seller;
+    }
+
+    public void setSeller(Seller seller) {
+        this.seller = seller;
+    }
+
     public Customer getCustomer() {
-        return this.customer;
+        return customer;
     }
 
     public void setCustomer(Customer customer) {
         this.customer = customer;
     }
 
-    public String getPayment() {
-        return this.payment;
-    }
-
-    public void setPayment(String payment) {
-        this.payment = payment;
-    }
-
     public LocalDate getDate() {
-        return this.date;
+        return date;
     }
 
     public void setDate(LocalDate date) {
         this.date = date;
     }
 
-    public BigDecimal getCommission() {
-        return this.commission;
+    public double getPrice() {
+        return price;
     }
 
-    public void setCommission(BigDecimal commission) {
+    public void setPrice(double price) {
+        this.price = price;
+    }
+
+    public double getCommission() {
+        return commission;
+    }
+
+    public void setCommission(double commission) {
         this.commission = commission;
     }
 }

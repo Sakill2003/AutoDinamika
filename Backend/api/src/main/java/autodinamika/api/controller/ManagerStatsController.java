@@ -1,16 +1,12 @@
 package autodinamika.api.controller;
 
-import java.time.LocalDate;
-import java.time.Period;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -19,63 +15,61 @@ import autodinamika.api.dto.RankedItemDTO;
 import autodinamika.api.model.Sale;
 import autodinamika.api.repository.SaleRepository;
 
-
 @RestController
 @RequestMapping("/api")
 public class ManagerStatsController {
 
-    @Autowired
-    private SaleRepository saleRepository;
+    private final SaleRepository saleRepository;
+
+    // Inyección por constructor para facilitar las pruebas unitarias
+    public ManagerStatsController(SaleRepository saleRepository) {
+        this.saleRepository = saleRepository;
+    }
 
     @GetMapping("/manager/stats")
-    public ManagerStatsDTO getStats() {
+    public ResponseEntity<ManagerStatsDTO> getStats() {
         List<Sale> allSales = saleRepository.findAll();
+
+        if (allSales.isEmpty()) {
+            return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
+        }
 
         int totalSales = allSales.size();
         double totalCollected = allSales.stream()
             .mapToDouble(sale -> sale.getCar().getCarModel().getPrice().doubleValue())
             .sum();
 
-        double totalCommissions = allSales.stream()
-            .mapToDouble(sale -> sale.getCar().getCarModel().getPrice().doubleValue() * 0.10)
-            .sum();
-
+        double totalCommissions = totalCollected * 0.10;
         double earnings = totalCollected - totalCommissions;
 
-        // Top sellers
-        Map<String, Long> sellerCount = allSales.stream()
+        List<RankedItemDTO> topSellers = allSales.stream()
             .collect(Collectors.groupingBy(
                 s -> s.getSeller().getFirst_Name() + " " + s.getSeller().getLast_Name(),
                 Collectors.counting()
-            ));
-
-        List<RankedItemDTO> topSellers = sellerCount.entrySet().stream()
+            ))
+            .entrySet().stream()
             .sorted(Map.Entry.<String, Long>comparingByValue().reversed())
             .limit(5)
             .map(e -> new RankedItemDTO(e.getKey(), e.getValue().intValue()))
             .toList();
 
-        // Top brands
-        Map<String, Long> brandCount = allSales.stream()
+        List<RankedItemDTO> topBrands = allSales.stream()
             .collect(Collectors.groupingBy(
                 s -> s.getCar().getCarModel().getBrand(),
                 Collectors.counting()
-            ));
-
-        List<RankedItemDTO> topBrands = brandCount.entrySet().stream()
+            ))
+            .entrySet().stream()
             .sorted(Map.Entry.<String, Long>comparingByValue().reversed())
             .limit(5)
             .map(e -> new RankedItemDTO(e.getKey(), e.getValue().intValue()))
             .toList();
 
-        // Top models
-        Map<String, Long> modelCount = allSales.stream()
+        List<RankedItemDTO> topModels = allSales.stream()
             .collect(Collectors.groupingBy(
                 s -> s.getCar().getCarModel().getModel() + " " + s.getCar().getCarModel().getYear(),
                 Collectors.counting()
-            ));
-
-        List<RankedItemDTO> topModels = modelCount.entrySet().stream()
+            ))
+            .entrySet().stream()
             .sorted(Map.Entry.<String, Long>comparingByValue().reversed())
             .limit(5)
             .map(e -> new RankedItemDTO(e.getKey(), e.getValue().intValue()))
@@ -89,7 +83,6 @@ public class ManagerStatsController {
         dto.setTopBrands(topBrands);
         dto.setTopModels(topModels);
 
-        return dto;
+        return ResponseEntity.ok(dto);
     }
-    
 }

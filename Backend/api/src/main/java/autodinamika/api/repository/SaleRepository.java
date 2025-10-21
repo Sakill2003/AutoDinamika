@@ -1,17 +1,21 @@
-package autodinamika.api.repository;
+package com.autodinamikasystem.repository;
+
+import com.autodinamikasystem.dto.SellerStatsDTO;
+import com.autodinamikasystem.model.Sale;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
 
 import java.util.List;
-import java.util.Optional;
-
-import org.springframework.data.jpa.repository.JpaRepository;
-
-import autodinamika.api.model.Car;
-import autodinamika.api.model.Sale;
-import autodinamika.api.model.Seller;
 
 public interface SaleRepository extends JpaRepository<Sale, Long> {
 
-    int countBySeller(Seller seller);
-    List<Sale> findTop7BySellerOrderByDateDesc(Seller seller);
-
+    @Query("SELECT new com.autodinamikasystem.dto.SellerStatsDTO( " +
+           "s.seller.name, " +
+           "COUNT(s), " +
+           "SUM(s.price), " +
+           "SUM(s.commission) ) " +
+           "FROM Sale s " +
+           "GROUP BY s.seller.name")
+    List<SellerStatsDTO> getSellerStats();
 }
+

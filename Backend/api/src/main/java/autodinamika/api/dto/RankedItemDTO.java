@@ -2,7 +2,7 @@ package autodinamika.api.dto;
 
 public class RankedItemDTO {
     private String name;
-    private int value; //Number of sales
+    private int value; 
 
     public RankedItemDTO(String name, int value) {
         this.name = name;

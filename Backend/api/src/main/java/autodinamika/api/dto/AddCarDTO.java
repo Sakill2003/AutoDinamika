@@ -8,7 +8,7 @@ public class AddCarDTO {
     private int year;
     private String chassisNumber;
     private String engineNumber;
-    private BigDecimal price;  // ← cambiado de Double a BigDecimal
+    private BigDecimal price;  
     private String color;
     private String imgf;
     private String imgs;
